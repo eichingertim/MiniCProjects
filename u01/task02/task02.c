@@ -1,11 +1,9 @@
 #include <stdio.h>
+#include <stdbool.h>
 
-int j;
-
-int M;
-int N;
-
-void calculateMAndN() {
+int calculateMAndN(bool isM, int j) {
+    int M;
+    int N;
     if (((int) j/100) == 17)
     {
         M = 23;
@@ -39,20 +37,37 @@ void calculateMAndN() {
         M = 25;
         N = 1;
     }
+
+    if (isM)
+    {
+        return M;
+    } else {
+        return N;
+    }
+    
 }
 
 int main(void) {
 
+    struct variables {
+        int M;
+        int N;
+    };
+
+    int j;
+    struct variables mandn;
+
     printf("\nEnter the year where you want to calculate easter-date (YYYY): ");
     scanf("%ld", &j);
 
-    calculateMAndN();
+    mandn.M = calculateMAndN(true, j);
+    mandn.N = calculateMAndN(false, j);
 
     int a = j % 19;
     int b = j % 4;
     int c = j % 7;
-    int d = ((19 * a) + M) % 30;
-    int e = ((2 * b) + (4 * c) + (6 * d) + N) % 7;
+    int d = ((19 * a) + mandn.M) % 30;
+    int e = ((2 * b) + (4 * c) + (6 * d) + mandn.N) % 7;
     
     int marchEasterDate = 22 + d + e;
     int aprilEasterDate = d + e - 9;
@@ -60,7 +75,7 @@ int main(void) {
     if (aprilEasterDate == 26)
     {
         aprilEasterDate = 19;
-    } else if (aprilEasterDate == 25 && d == 28 && e == 6 && ((11 * M) + 11) % 30 < 19) {
+    } else if (aprilEasterDate == 25 && d == 28 && e == 6 && ((11 * mandn.M) + 11) % 30 < 19) {
         aprilEasterDate = 18;
     }
 
@@ -71,11 +86,7 @@ int main(void) {
             printf("\n Ostern ist im Jahr %d am %d April.\n", j, aprilEasterDate);
 
     }
-    
 
-    
-    
-    
 
     return 0;
 }
